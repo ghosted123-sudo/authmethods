@@ -23,7 +23,7 @@ jobs:
         run: composer install --no-interaction
 
       - name: Run PHPUnit tests
-        run: ./vendor/bin/phpunit
+        run: ./bin/phpunit
 
       - name: Run Static Analysis (SAST with SonarCloud)
         uses: SonarSource/sonarcloud-github-action@v1
