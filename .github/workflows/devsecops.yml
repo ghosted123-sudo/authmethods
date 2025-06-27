@@ -1,0 +1,35 @@
+name: DevSecOps CI Pipeline
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  devsecops-pipeline:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.1'
+          extensions: mbstring, xml, ctype, iconv, intl, pdo, mysql
+          tools: composer
+
+      - name: Install Composer dependencies
+        run: composer install --no-interaction
+
+      - name: Run PHPUnit tests
+        run: ./vendor/bin/phpunit
+
+      - name: Run Static Analysis (SAST with SonarCloud)
+        uses: SonarSource/sonarcloud-github-action@v1
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+
+      - name: Run DAST (OWASP ZAP Baseline)
+        run: |
+          docker run -t owasp/zap2docker-stable zap-baseline.py -t http://localhost:8000 -g gen.conf -r zap-report.html || true
