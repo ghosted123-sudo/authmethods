@@ -25,12 +25,13 @@ jobs:
       - name: Run PHPUnit tests
         run: ./bin/phpunit
 
-      - name: Run Static Analysis (SAST with SonarCloud)
+      - name: Run Static Analysis (SonarCloud)
         uses: SonarSource/sonarcloud-github-action@v1
+        with:
+          projectBaseDir: .
         env:
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-          SONAR_PROJECT_KEY: ghosted123-sudo
-          SONAR_ORGANIZATION: ghosted123-sudo
+            SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+
 
       - name: Run DAST (OWASP ZAP Baseline)
         run: |
