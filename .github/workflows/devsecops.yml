@@ -29,6 +29,8 @@ jobs:
         uses: SonarSource/sonarcloud-github-action@v1
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          SONAR_PROJECT_KEY: ghosted123-sudo
+          SONAR_ORGANIZATION: ghosted123-sudo
 
       - name: Run DAST (OWASP ZAP Baseline)
         run: |
